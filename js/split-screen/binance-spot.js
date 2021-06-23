@@ -1,9 +1,16 @@
 (run => {
+  if (window.self !== window.top)    return;
   if (!location.href.match(/split/)) return;
-
-  if (document.body.innerHTML.match(/Log In/)) location.href = "https://accounts.binance.com/en/login";
-  if (window.self !== window.top) return;
+  if (document.body.innerHTML.match(/Log In/)) return location.href = "https://accounts.binance.com/en/login";
+  if (!document.href.match(/my\/dashboard/))   return location.href = "https://binance.com/en/my/dashboard?split=1";
   
+  var remove_support = setInterval(() => {
+      var button = document.getElementById('pre-chat-container');
+      if (!button) return;
+      clearInterval(remove_support);
+      button.remove();
+  }, 1000);
+
   var retry = setInterval(() => {
       try {
         if (pairs()) {
@@ -32,5 +39,4 @@
       }
       catch(e) {}
   }, 1000);
-
 })();
