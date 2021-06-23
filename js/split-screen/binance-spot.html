@@ -1,0 +1,22 @@
+<html>
+<head>
+    <style>
+        div { width: 100%; height: 100%; margin: 0 auto; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            var encoded_name = location.href.match(/name=([^\?\&]+)/)[1];
+            var encoded_url  = location.href.match(/url=([^\?\&]+)/)[1];
+            if (encoded_url) {
+                $('div').append(
+                    $('<a>').attr('href', unescape(encoded_url))
+                            .html('Open ' + unescape(encoded_name))
+                );
+            }
+        });
+    </script>
+</head>
+<body><div></div>
+</body>
+</html>

@@ -20,7 +20,9 @@
               html += pair;
           }
           else if (pair) {
-              html += '<iframe src="https://www.binance.com/en/trade/'+pair+'?layout=pro&type=spot"></iframe>';
+              var encoded_name = escape(pair);
+              var encoded_url  = escape('https://www.binance.com/en/trade/'+pair+'?layout=pro&type=spot');
+              html += '<iframe src="https://mvu8912.github.io/js/split-screen/binance-spot.html?name='+encoded_name+'&url='+encoded_url+'"></iframe>';
           }
         });
 
