@@ -9,7 +9,7 @@
   html += "iframe {width: 100%; height: 100%}";
   html += "</style><table>";
 
-  pairs.forEach((pair) => {
+  pairs().forEach((pair) => {
          if (pair.match(/tr|td/)) html += pair;
     else if (pair) html += '<iframe src="https://www.binance.com/en/trade/'+pair+'?layout=pro&type=spot"></iframe>';
   });
