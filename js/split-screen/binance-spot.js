@@ -39,4 +39,9 @@
       }
       catch(e) {}
   }, 1000);
+
+  setInterval(() => {
+      if (document.body.innerHTML.match(/Aw/) &&
+          document.body.innerHTML.match(/Snap/)) location.reload();
+  }, 10000);
 })();
