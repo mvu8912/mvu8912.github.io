@@ -2,7 +2,9 @@
     var retry = setInterval(() => {
         try {
             var login = get_credential();
-            if (login.done()) return clearnInterval(retry);
+            if (login.done()) {
+                return clearnInterval(retry);
+            }
             var $username = $(login.field.username);
             var $password = $(login.field.password);
             var username  = login.detail.username;
