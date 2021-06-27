@@ -13,7 +13,7 @@
             clearInterval(retry);
             $username.val(username);
             $password.val(password);
-            submit.click()
+            setTimeout(() => submit.click(), 5000);
         }
         catch (e) {
         }
