@@ -1127,7 +1127,7 @@ my %data;
 $data{steps} = load_json file => $ENV{PIPEDREAM_STEPS};
 $data{status} = _status( $data{steps}{trigger}{event}{query}{alertDetails} );
 $data{duration}{text} =
-  _duration( $data{steps}{trigger}{event}{query}{alertDuration} );
+  _duration( $data{steps}{trigger}{event}{query}{alertFriendlyDuration} );
 my $monid = $data{steps}{trigger}{event}{query}{monitorID};
 $data{dashboard}{text} = _dashboard( $monid );
 
@@ -1170,30 +1170,9 @@ sub _dashboard {
 }
 
 sub _duration {
-    my ($num) = @_;
+    my ($duration) = @_;
 
-    return if !$num;
-
-    my $duration = $num / 1000;
-    my $minute   = 60;
-    my $hour     = 60 * $minute;
-    my $day      = 24 * $hour;
-
-    if ( $duration > $day ) {
-        $duration = sprintf "%d day%s", _num( $duration / $day );
-    }
-    elsif ( $duration > $hour ) {
-        $duration = sprintf "%d hour%s", _num( $duration / $hour );
-    }
-    elsif ( $duration > $minute ) {
-        $duration = sprintf "%d minute%s", _num( $duration / $minute );
-    }
-    elsif ( $num > 1000 ) {
-        $duration = sprintf "%d second%s", _num( $num / 1000 );
-    }
-    else {
-        $duration = sprintf "%s ms", $num;
-    }
+    return if !$duration;
 
     return "<br>It was down for $duration";
 
