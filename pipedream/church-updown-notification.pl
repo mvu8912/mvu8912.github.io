@@ -4346,7 +4346,8 @@ my $default_email = q{church@freeitsupport.org.uk};
 
 my %profiles = (
     791318406 => {
-        url => "https://stjohnshartford.freeitsupport.org.uk",    ## Testing
+        email => 'mvu8912@gmail.com',
+        url   => "https://status.freeitsupport.org.uk",
     },
     791227600 => {
         email => q{office@stjohnshartford.org},
@@ -4400,7 +4401,8 @@ $data{steps}  = load_json file => $ENV{PIPEDREAM_STEPS};
 $data{status} = _status( $data{steps}{trigger}{event}{query}{alertDetails} );
 $data{duration}{text} =
   _duration( $data{steps}{trigger}{event}{query}{alertFriendlyDuration} );
-my $monid = defor $ENV{TEST_MON_ID}, $data{steps}{trigger}{event}{query}{monitorID};
+my $monid = defor $ENV{TEST_MON_ID},
+  $data{steps}{trigger}{event}{query}{monitorID};
 $data{dashboard}{text} = _dashboard($monid);
 
 _tt( $email_template, \%data );
