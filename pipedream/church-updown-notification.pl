@@ -1104,6 +1104,10 @@ my %profiles = (
         email => q{office@waltonbc.org},
         url   => "https://waltonbc.freeitsupport.org.uk",
     },
+    789288228 => {
+        email => 'sally@waltonparish.org.uk',
+        url   => 'https://waltonparish.freeitsupport.org.uk',
+    },
 );
 
 my $email_template = q{
