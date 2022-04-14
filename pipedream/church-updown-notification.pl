@@ -1086,7 +1086,7 @@ my $default_email = q{church@freeitsupport.org.uk};
 
 my %profiles = (
     791318406 => {
-        url   => "https://stjohnshartford.freeitsupport.org.uk",  ## Testing
+        url => "https://stjohnshartford.freeitsupport.org.uk",    ## Testing
     },
     791227600 => {
         email => q{office@stjohnshartford.org},
@@ -1132,18 +1132,18 @@ use MF::Utils qw(load_json defor);
 
 my %data;
 
-$data{steps} = load_json file => $ENV{PIPEDREAM_STEPS};
+$data{steps}  = load_json file => $ENV{PIPEDREAM_STEPS};
 $data{status} = _status( $data{steps}{trigger}{event}{query}{alertDetails} );
 $data{duration}{text} =
   _duration( $data{steps}{trigger}{event}{query}{alertFriendlyDuration} );
-my $monid = $data{steps}{trigger}{event}{query}{monitorID};
-$data{dashboard}{text} = _dashboard( $monid );
+my $monid = defor $ENV{TEST_MON_ID}, $data{steps}{trigger}{event}{query}{monitorID};
+$data{dashboard}{text} = _dashboard($monid);
 
 _tt( $email_template, \%data );
 
 my $subject = sprintf "Website %s is %s",
-    $data{steps}{trigger}{event}{query}{monitorURL},
-    $data{steps}{trigger}{event}{query}{alertTypeFriendlyName};
+  $data{steps}{trigger}{event}{query}{monitorURL},
+  $data{steps}{trigger}{event}{query}{alertTypeFriendlyName};
 
 _email( $monid, $subject, $email_template );
 
@@ -1192,41 +1192,43 @@ sub _num {
 }
 
 sub _email {
-    my ($id, $subject, $email) = @_;
+    my ( $id, $subject, $email ) = @_;
 
     my $from = $default_email;
-    my $cc = $default_email;
-    my $to = defor $profiles{$id}{email}, $cc;
+    my $cc   = $default_email;
+    my $to   = defor $ENV{TEST_SEND_TO}, defor $profiles{$id}{email}, $cc;
     my %data = (
-       "subject" => $subject,
-       "content" => [
-          {
-             "type" => "text/html",
-             "value" => $email,
-          }
-       ],
-       "from" => {
-          "email" => $from
-       },
-       "personalizations" => [
-          {
-             "to" => [
-                {
-                   "email" => $to,
-                }
-             ]
-          }
-       ],
+        "subject" => $subject,
+        "content" => [
+            {
+                "type"  => "text/html",
+                "value" => $email,
+            }
+        ],
+        "from" => {
+            "email" => $from
+        },
+        "personalizations" => [
+            {
+                "to" => [
+                    {
+                        "email" => $to,
+                    }
+                ]
+            }
+        ],
     );
 
-    if ($to ne $cc) {
-        $data{personalizations}[0]{cc} = [{email => $cc}];
+    if ( $to ne $cc ) {
+        $data{personalizations}[0]{cc} = [ { email => $cc } ];
     }
 
-    system qw(
-        curl --request POST
-             --url https://api.sendgrid.com/v3/mail/send
-             --header), "Authorization: Bearer $ENV{SendGrid}", qw(
-             --header), "Content-Type: application/json", qw(
-             --data), JSON::PP->new->encode(\%data);
+    my @echo = $ENV{NO_SEND} ? qw(echo) : ();
+
+    system @echo, qw(
+      curl --request POST
+      --url https://api.sendgrid.com/v3/mail/send
+      --header), "Authorization: Bearer $ENV{SendGrid}", qw(
+      --header), "Content-Type: application/json",       qw(
+      --data),   JSON::PP->new->encode( \%data );
 }
