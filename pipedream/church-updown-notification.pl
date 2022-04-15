@@ -4361,10 +4361,6 @@ my %profiles = (
         email => q{church.office@smem.org.uk},
         url   => "https://smem.freeitsupport.org.uk",
     },
-    791085019 => {
-        email => q{office@waltonbc.org},
-        url   => "https://waltonbc.freeitsupport.org.uk",
-    },
     789288228 => {
         email => 'sally@waltonparish.org.uk',
         url   => 'https://waltonparish.freeitsupport.org.uk',
