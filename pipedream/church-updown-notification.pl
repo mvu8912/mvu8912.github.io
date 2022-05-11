@@ -4375,6 +4375,11 @@ my %profiles = (
         email => 'sally@waltonparish.org.uk',
         url   => 'https://waltonparish.freeitsupport.org.uk',
     },
+    791718860 => {
+        type  => 'charity',
+        email => 'petersonsfund@gmail.com',
+        url   => 'https://petersonsfund.freeitsupport.org.uk',
+    },
     791711094 => {
         type  => 'charity',
         email => 'suite109costumes@gmail.com',
