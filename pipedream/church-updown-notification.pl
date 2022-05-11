@@ -3757,6 +3757,7 @@ $fatpacked{"MF/Utils.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'MF_UTI
     touchfile
     writefile
     writefile_json
+    Service
   );
   
   my %MF_ENV = ();
@@ -4296,6 +4297,10 @@ $fatpacked{"MF/Utils.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'MF_UTI
       return wantarray ? %captured : \%captured;
   }
   
+  sub Service {
+      return bless {}, 'Service';
+  }
+  
   1;
 MF_UTILS
 
@@ -4342,28 +4347,38 @@ use lib 'lib';
 use JSON::PP;
 use MF::Utils;
 
-my $default_email = q{church@freeitsupport.org.uk};
+my $default_email = q{@freeitsupport.org.uk};
 
 my %profiles = (
     791318406 => {
+        type  => 'michael.vu',
         email => 'mvu8912@gmail.com',
         url   => "https://status.freeitsupport.org.uk",
     },
     791227600 => {
+        type  => 'church',
         email => q{office@stjohnshartford.org},
         url   => "https://stjohnshartford.freeitsupport.org.uk",
     },
     791060001 => {
+        type  => 'church',
         email => q{info@stjohnvianney.co.uk},
         url   => "https://stjohnvianney.freeitsupport.org.uk",
     },
     790843428 => {
+        type  => 'church',
         email => q{church.office@smem.org.uk},
         url   => "https://smem.freeitsupport.org.uk",
     },
     789288228 => {
+        type  => 'church',
         email => 'sally@waltonparish.org.uk',
         url   => 'https://waltonparish.freeitsupport.org.uk',
+    },
+    791711094 => {
+        type  => 'charity',
+        email => 'suite109costumes@gmail.com',
+        url   => 'https://suite109costumes.freeitsupport.org.uk',
     },
 );
 
@@ -4385,7 +4400,7 @@ Greeting,
 <br>
 <br>Website Notication @ <b>Free IT Support</b>
 <br><b>T</b>: 07414645481
-<br><b>E</b>: Church@FreeITSupport.org.uk
+<br><b>E</b>: {{profile.type}}@FreeITSupport.org.uk
 <br><b>W</b>: https://FreeITSupport.org.uk
 };
 
@@ -4400,6 +4415,7 @@ $data{duration}{text} =
 my $monid = defor $ENV{TEST_MON_ID},
   $data{steps}{trigger}{event}{query}{monitorID};
 $data{dashboard}{text} = _dashboard($monid);
+$data{profile}{type} = 'Michael.Vu';
 
 _tt( $email_template, \%data );
 
@@ -4455,6 +4471,11 @@ sub _num {
 
 sub _email {
     my ( $id, $subject, $email ) = @_;
+
+    my $type = $profiles{$id}{type};
+
+    $default_email = $type ? $type . $default_email
+                   : 'michael.vu' . $default_email;
 
     my $from = $default_email;
     my $cc   = $default_email;
