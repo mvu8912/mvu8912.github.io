@@ -4392,8 +4392,6 @@ Greeting,
 <br>
 <br>The {{steps.trigger.event.query.monitorFriendlyName}} website ({{steps.trigger.event.query.monitorURL}}) is {{steps.trigger.event.query.alertTypeFriendlyName}}
 <br>
-<br>Event happened at {{steps.trigger.context.ts}}
-<br>
 <br>We will update you if anything changes again. 
 <br>
 {{duration.text}}{{dashboard.text}}
