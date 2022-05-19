@@ -4392,8 +4392,6 @@ Greeting,
 <br>
 <br>The {{steps.trigger.event.query.monitorFriendlyName}} website ({{steps.trigger.event.query.monitorURL}}) is {{steps.trigger.event.query.alertTypeFriendlyName}}
 <br>
-<br>It is currently {{status}}
-<br>
 <br>Event happened at {{steps.trigger.context.ts}}
 <br>
 <br>We will update you if anything changes again. 
@@ -4414,7 +4412,6 @@ use MF::Utils qw(load_json defor);
 my %data;
 
 $data{steps}  = load_json file => $ENV{PIPEDREAM_STEPS};
-$data{status} = _status( $data{steps}{trigger}{event}{query}{alertDetails} );
 $data{duration}{text} =
   _duration( $data{steps}{trigger}{event}{query}{alertFriendlyDuration} );
 my $monid = defor $ENV{TEST_MON_ID},
@@ -4439,16 +4436,6 @@ sub _tt {
         my $v = defor eval($token), "";
         print "Token: $token=$v\n"; $v
     |eg;
-}
-
-sub _status {
-    my ($status) = @_;
-
-    return if !$status;
-
-    my ( $code, $readable ) = split / - /, $status;
-
-    return $readable;
 }
 
 sub _dashboard {
