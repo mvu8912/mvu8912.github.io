@@ -1,9 +1,14 @@
 function manual(service) {
     if (service == null) {
-        console.log('No service was provided.');
-        return;
+        let matches = location.href.match(/&manual=([^&]+)/);
+        if (matches) {
+            service = matches[1];
+        }
+        else {
+            console.log('No service was provided.');
+            return;
+        }
     }
-
     $(document).ready(() => {
         // Find all <tr> elements, then filter based on the presence of a button with text 
         $('tr').each(tr => {
