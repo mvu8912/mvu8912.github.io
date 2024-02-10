@@ -6,22 +6,26 @@ function manual(service) {
 
     $(document).ready(() => {
         // Find all <tr> elements, then filter based on the presence of a button with text 
-        $('tr').each(() => {
-            var $row = $(this); // Cache the current <tr>
+        $('tr').each(tr => {
+            let $row = $(tr.target); // Cache the current <tr>
             
             // Check if there's a button with text  in this <tr>
-            var hasServiceLabel = $row.find('button').filter(() => {
-                return $(this).text().trim().match(service);
+            let hasServiceLabel = $row.find('button').filter((i, btn) => {
+                let label = $(btn).text().trim();
+                if (label == null) return false;
+                else return label == service;
             }).length > 0;
             
             // If found, proceed to find the toggle
             if (!hasServiceLabel) return;
 
             // Find the toggle button within the same <tr>
-            var $toggle = $row.find('button').filter(() => {
-                var title = $(this).attr('title');
-                // We're looking for a button without the specific title attribute
-                return !title.match(/changes don\'t trigger updates/);
+            // We're looking for a button without the specific title attribute
+            let $toggle = $row.find('button').filter((i, toggle) => {
+                let title = $(toggle).attr('title');
+                if (!title) return false;
+                else if (title.match(/Auto\:/)) return false;
+                else return true;
             });
             
             // If the toggle button is found and it's not in manual mode, click it
